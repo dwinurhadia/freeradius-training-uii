@@ -1,0 +1,21 @@
+server eduroam {
+	listen {
+		type = auth
+		ipaddr = *
+		port = 1812
+	}
+	authorize {
+		files
+		eap
+		pap
+	}
+	
+	authenticate {
+		eap
+		pap
+	}
+	
+	accounting {
+		files
+	}
+}
