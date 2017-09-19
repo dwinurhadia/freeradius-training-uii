@@ -948,3 +948,26 @@ post-proxy {
 #	}
 }
 }
+
+
+server eduroam {
+	listen {
+		type = auth
+		ipaddr = *
+		port = 1812
+	}
+	
+	authorize {
+		files
+		pap
+		mschap
+	}
+	authenticate {
+		pap
+		eap
+		mschap
+	}
+	post-auth {
+		ok
+	}
+}

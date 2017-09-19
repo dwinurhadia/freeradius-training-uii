@@ -430,3 +430,27 @@ post-proxy {
 }
 
 } # inner-tunnel server block
+
+
+
+server eduroam-inner-tunnel {
+	listen 	{
+		type = auth
+		ipaddr = *
+		port = 18121
+	}
+	authorize {
+		files
+		pap
+		eap
+		mschap
+	}
+	authenticate {
+		pap
+		eap
+		mschap
+	}
+	post-auth {
+		ok
+	} 
+}

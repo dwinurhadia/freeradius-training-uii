@@ -217,9 +217,5 @@ DEFAULT	Hint == "SLIP"
 # You should add test accounts to the TOP of this file! #
 # See the example user "bob" above.                     #
 #########################################################
-
-foo 	Cleartext-Password := "bar"
-	Reply-Message := "Halo %{User-Name}"
-
-DEFAULT
-	Reply-Message := "Halo %{User-Name}, I dont know you"
+foo 	Cleartext-password := "bar"
+	Reply-Message := "Hello %{User-Name}"
