@@ -123,7 +123,7 @@ listen {
 	#  Allowed values are:
 	#	integer port number (1812)
 	#	0 means "use /etc/services for the proper port"
-	port = 0
+	port = 1814
 
 	#  Some systems support binding to an interface, in addition
 	#  to the IP address.  This feature isn't strictly necessary,
@@ -959,6 +959,7 @@ server eduroam {
 	
 	authorize {
 		files
+		eap
 		pap
 		mschap
 	}

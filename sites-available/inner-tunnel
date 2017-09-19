@@ -32,7 +32,7 @@ server inner-tunnel {
 #
 listen {
        ipaddr = 127.0.0.1
-       port = 18120
+       port = 18124
        type = auth
 }
 
@@ -437,7 +437,7 @@ server eduroam-inner-tunnel {
 	listen 	{
 		type = auth
 		ipaddr = *
-		port = 18121
+		port = 18120
 	}
 	authorize {
 		files
