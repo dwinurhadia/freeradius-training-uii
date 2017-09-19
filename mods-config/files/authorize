@@ -218,8 +218,8 @@ DEFAULT	Hint == "SLIP"
 # See the example user "bob" above.                     #
 #########################################################
 
-#foo 	Cleartext-Password := "bar"
-#	Reply-Message := "Halo %{User-Name}"
+foo 	Cleartext-Password := "bar"
+	Reply-Message := "Halo %{User-Name}"
 
-#DEFAULT
-#	Reply-Message := "Halo %{User-Name}, I dont know you"
+DEFAULT
+	Reply-Message := "Halo %{User-Name}, I dont know you"
