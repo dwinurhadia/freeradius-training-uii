@@ -958,6 +958,11 @@ server eduroam {
 	}
 	
 	authorize {
+		if (&User-Name !~ /uii.ac.id$/) {
+			update-control {
+				Proxy-To-Realm = 'eduroam-flr'
+			}
+		}
 		files
 		eap
 		pap
