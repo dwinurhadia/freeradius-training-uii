@@ -18,4 +18,8 @@ server eduroam {
 	accounting {
 		files
 	}
+	
+	post-auth {
+		ok
+	}
 }
