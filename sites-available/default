@@ -949,6 +949,10 @@ post-proxy {
 }
 }
 
+operator_name = "ugm.ac.id"
+eduroam_guest_vlan = "202"
+eduroam_local_vlan = "203"
+
 server eduroam {
         listen {
                 type = auth
@@ -957,13 +961,27 @@ server eduroam {
         }
 
         authorize {
-                if (&User-Name !~ /uii.ac.id$/) {
-                        update control {
-                                Proxy-To-Realm = 'eduroam-flr'
-                        }
+	
+		linelog_recv_request
+		
+		if (noop || !&Stripped-User-Domain) { 
+			reject 
+		}
+
+                if (Stripped-User-Domain != "${operator_name}") {
+                        update {
+				control:Load-Balance-Key := &Calling-Station-ID
+                                control:Proxy-To-Realm := 'eduroam-flr'
+                        	
+				request:Operator-Name := "1${operator_name}"
+			}
+			return
                 }
                 files
-                eap
+                eap {
+			ok = return
+			updated = return
+		}
                 pap
                 mschap
         }
@@ -972,8 +990,45 @@ server eduroam {
                 eap
                 mschap
         }
+	pre-proxy {
+		attr_filter.pre-proxy
+		linelog_send_proxy_request
+	}
+	post-proxy {
+		attr_filter.post-proxy
+		linelog_recv_proxy_response
+	}
+	authenticate {
+		eap
+	}
         post-auth {
-                ok
+                update reply {
+			Tunnel-Type := VLAN
+			Tunnel-Medium-Type := IEEE-802
+		}
+		if (&control:Proxy-To-Realm) {
+			update reply {
+				Tunnel-Private-Group-ID := ${eduroam_guest_vlan}
+			}
+		}
+		else {
+			update reply {
+				Tunnel-Private-Group-ID := ${eduroam_local_vlan}
+			}
+		}
+		
+		if (&session-state:Stripped-User-Name) {
+			update reply {
+				User-Name := "%{session-state:Stripped-User-Name}@%{Stripped-User-Domain}"
+			}
+		}
+
+		linelog_send_accept
+
+		Post-Auth-Type REJECT {
+			attr_filter.access_reject
+			linelog_send_reject
+		}
         }
 }
 
