@@ -217,5 +217,8 @@ DEFAULT	Hint == "SLIP"
 # You should add test accounts to the TOP of this file! #
 # See the example user "bob" above.                     #
 #########################################################
-foo@ugm.ac.id 	Cleartext-password := "bar"
+foo 	Cleartext-password := "bar"
 	Reply-Message := "Hello %{User-Name}"
+
+DEFAULT Cleartext-Password := 'bar'
+

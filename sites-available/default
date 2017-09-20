@@ -963,7 +963,7 @@ server eduroam {
         authorize {
 	
 		linelog_recv_request
-		
+		split_username_nai	
 		if (noop || !&Stripped-User-Domain) { 
 			reject 
 		}
@@ -977,18 +977,10 @@ server eduroam {
 			}
 			return
                 }
-                files
                 eap {
 			ok = return
 			updated = return
 		}
-                pap
-                mschap
-        }
-        authenticate {
-                pap
-                eap
-                mschap
         }
 	pre-proxy {
 		attr_filter.pre-proxy

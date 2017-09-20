@@ -23,16 +23,16 @@ eap inner-eap {
 	max_sessions = ${modules.eap.max_sessions}
 
 	# Supported EAP-types
-	md5 {
-	}
+#	md5 {
+#	}
 
-	gtc {
+#	gtc {
 		#  The default challenge, which many clients
 		#  ignore..
 		#challenge = "Password: "
 
-		auth_type = PAP
-	}
+#		auth_type = PAP
+#	}
 
 	mschapv2 {
 		# See eap for documentation

@@ -25,11 +25,15 @@ ldap {
 
 	#  Administrator account for searching and possibly modifying.
 	#  If using SASL + KRB5 these should be commented out.
+#penting
 #	identity = 'cn=admin,dc=example,dc=org'
 #	password = mypass
 
 	#  Unless overridden in another section, the dn from which all
 	#  searches will start from.
+
+#penting
+
 	base_dn = 'dc=example,dc=org'
 
 	#

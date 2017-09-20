@@ -462,16 +462,16 @@ server eduroam-inner-tunnel {
 
 		files
 		pap
-		eap
+#		eap
 		mschap
 	}
 	authenticate {
 		inner-eap
 		pap
-		eap
+#		eap
 		mschap
 	}
-	post-auth {
-		ok
-	} 
+#	post-auth {
+#		ok
+#	} 
 }
