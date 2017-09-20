@@ -24,7 +24,7 @@ eap {
 	#  then that EAP type takes precedence over the
 	#  default type configured here.
 	#
-	default_eap_type = md5
+	default_eap_type = ttls
 
 	#  A list is maintained to correlate EAP-Response
 	#  packets with EAP-Request packets.  After a
@@ -258,7 +258,7 @@ eap {
 		#  In these cases, fragment size should be
 		#  1024 or less.
 		#
-	#	fragment_size = 1024
+		fragment_size = 1024
 
 		#  include_length is a flag which is
 		#  by default set to yes If set to
@@ -498,7 +498,7 @@ eap {
 			#  Deleting the entire "ocsp" subsection
 			#  also disables ocsp checking
 			#
-			enable = no
+			enable = yes
 
 			#
 			#  The OCSP Responder URL can be automatically
@@ -528,7 +528,7 @@ eap {
 			# to disable it in the query here.
 			# See http://technet.microsoft.com/en-us/library/cc770413%28WS.10%29.aspx
 			#
-			# use_nonce = yes
+			use_nonce = yes
 
 			#
 			# Number of seconds before giving up waiting
@@ -600,7 +600,7 @@ eap {
 		#  EAP conversation, then this configuration entry is
 		#  ignored.
 		#
-		default_eap_type = md5
+		default_eap_type = mschapv2
 
 		#  The tunneled authentication request does not usually
 		#  contain useful attributes like 'Calling-Station-Id',
@@ -651,7 +651,7 @@ eap {
 		#  the virtual server that processed the
 		#  outer requests.
 		#
-		virtual_server = "inner-tunnel"
+		virtual_server = "eduroam-inner-tunnel"
 
 		#  This has the same meaning, and overwrites, the
 		#  same field in the "tls" configuration, above.
@@ -772,7 +772,7 @@ eap {
 		#  the virtual server that processed the
 		#  outer requests.
 		#
-		virtual_server = "inner-tunnel"
+		virtual_server = "eduroam-inner-tunnel"
 
 		# This option enables support for MS-SoH
 		# see doc/SoH.txt for more info.

@@ -123,7 +123,7 @@ listen {
 	#  Allowed values are:
 	#	integer port number (1812)
 	#	0 means "use /etc/services for the proper port"
-	port = 0
+	port = 1814
 
 	#  Some systems support binding to an interface, in addition
 	#  to the IP address.  This feature isn't strictly necessary,
@@ -948,3 +948,87 @@ post-proxy {
 #	}
 }
 }
+
+operator_name = "ugm.ac.id"
+eduroam_guest_vlan = "202"
+eduroam_local_vlan = "203"
+
+server eduroam {
+        listen {
+                type = auth
+                ipaddr = *
+                port = 1812
+        }
+
+        authorize {
+	
+		linelog_recv_request
+		
+		if (noop || !&Stripped-User-Domain) { 
+			reject 
+		}
+
+                if (Stripped-User-Domain != "${operator_name}") {
+                        update {
+				control:Load-Balance-Key := &Calling-Station-ID
+                                control:Proxy-To-Realm := 'eduroam-flr'
+                        	
+				request:Operator-Name := "1${operator_name}"
+			}
+			return
+                }
+                files
+                eap {
+			ok = return
+			updated = return
+		}
+                pap
+                mschap
+        }
+        authenticate {
+                pap
+                eap
+                mschap
+        }
+	pre-proxy {
+		attr_filter.pre-proxy
+		linelog_send_proxy_request
+	}
+	post-proxy {
+		attr_filter.post-proxy
+		linelog_recv_proxy_response
+	}
+	authenticate {
+		eap
+	}
+        post-auth {
+                update reply {
+			Tunnel-Type := VLAN
+			Tunnel-Medium-Type := IEEE-802
+		}
+		if (&control:Proxy-To-Realm) {
+			update reply {
+				Tunnel-Private-Group-ID := ${eduroam_guest_vlan}
+			}
+		}
+		else {
+			update reply {
+				Tunnel-Private-Group-ID := ${eduroam_local_vlan}
+			}
+		}
+		
+		if (&session-state:Stripped-User-Name) {
+			update reply {
+				User-Name := "%{session-state:Stripped-User-Name}@%{Stripped-User-Domain}"
+			}
+		}
+
+		linelog_send_accept
+
+		Post-Auth-Type REJECT {
+			attr_filter.access_reject
+			linelog_send_reject
+		}
+        }
+}
+
