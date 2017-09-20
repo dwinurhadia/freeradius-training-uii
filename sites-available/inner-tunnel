@@ -440,12 +440,33 @@ server eduroam-inner-tunnel {
 		port = 18120
 	}
 	authorize {
+		# The outer username is considered garabage for autz purposes, but 
+		# the domain portion of the outer and inner identities must match.
+		split_username_nai
+		if (noop || (&Stripped-User-Domain && \
+		    (&outer.Stripped-User-Domain != &Stripped-User-Domain))) {
+			reject
+		}
+
+		# Make the user's real identity available to anything that needs
+		# it in the outer server.
+		update {
+			&outer.session-state:Stripped-User-Name := &Stripped-User-Name
+		}
+
+		# EAP for PEAPv0 (EAP-MSCHAPv2)
+		inner-eap {
+			ok = return
+			updated = return
+		}
+
 		files
 		pap
 		eap
 		mschap
 	}
 	authenticate {
+		inner-eap
 		pap
 		eap
 		mschap
